@@ -1,4 +1,7 @@
-my_list = [[] for _ in range(14)]
-my_list[3].append('Het None')
+my_list = []
 
-print(my_list)
+if my_list:
+    most_common_element = max(my_list, key=my_list.count)
+else:
+    most_common_element = 'deo co gi ca'
+print(most_common_element)
