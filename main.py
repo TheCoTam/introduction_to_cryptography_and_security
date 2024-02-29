@@ -11,6 +11,7 @@ ciphertext8 = '315c4eeaa8b5f8bffd11155ea506b56041c6a00c8a08854dd21a4bbde54ce5680
 ciphertext9 = '271946f9bbb2aeadec111841a81abc300ecaa01bd8069d5cc91005e9fe4aad6e04d513e96d99de2569bc5e50eeeca709b50a8a987f4264edb6896fb537d0a716132ddc938fb0f836480e06ed0fcd6e9759f40462f9cf57f4564186a2c1778f1543efa270bda5e933421cbe88a4a52222190f471e9bd15f652b653b7071aec59a2705081ffe72651d08f822c9ed6d76e48b63ab15d0208573a7eef027'
 ciphertext10 = '466d06ece998b7a2fb1d464fed2ced7641ddaa3cc31c9941cf110abbf409ed39598005b3399ccfafb61d0315fca0a314be138a9f32503bedac8067f03adbf3575c3b8edc9ba7f537530541ab0f9f3cd04ff50d66f1d559ba520e89a2cb2a83'
 target = '32510ba9babebbbefd001547a810e67149caee11d945cd7fc81a05e9f85aac650e9052ba6a8cd8257bf14d13e6f0a803b54fde9e77472dbff89d71b57bddef121336cb85ccb8f3315f4b52e301d16e9f52f904'
+plaintext = ''
 
 ciphertext_list = [ciphertext1, ciphertext2, ciphertext3, ciphertext4, ciphertext5, ciphertext6, ciphertext7, ciphertext8, ciphertext9, ciphertext10]
 max_length = max(len(ciphertext1), len(ciphertext2))
@@ -41,10 +42,15 @@ for pair in tuples:
             key[int(i / 2)].append(subkey1)
             key[int(i / 2)].append(subkey2)
 
-for item in key:
-    # print(item)
-    if item:
-        most_common_subkey = max(item, key=item.count)
-    else:
-        most_common_subkey = '00'
+for i in range(0, len(target), 2):
+    num = int(target[i:i+2], 16)
+    subkey_list = key[int(i/2)]
+    if subkey_list:
+        # dạng thập lục phân
+        most_common_subkey = max(subkey_list, key=subkey_list.count)
 
+        plaintext = plaintext +chr(int(most_common_subkey, 16) ^ num)
+    else:
+        plaintext = plaintext + '*'
+
+print(plaintext)
