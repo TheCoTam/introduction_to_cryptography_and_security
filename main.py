@@ -11,31 +11,34 @@ ciphertext8 = '315c4eeaa8b5f8bffd11155ea506b56041c6a00c8a08854dd21a4bbde54ce5680
 ciphertext9 = '271946f9bbb2aeadec111841a81abc300ecaa01bd8069d5cc91005e9fe4aad6e04d513e96d99de2569bc5e50eeeca709b50a8a987f4264edb6896fb537d0a716132ddc938fb0f836480e06ed0fcd6e9759f40462f9cf57f4564186a2c1778f1543efa270bda5e933421cbe88a4a52222190f471e9bd15f652b653b7071aec59a2705081ffe72651d08f822c9ed6d76e48b63ab15d0208573a7eef027'
 ciphertext10 = '466d06ece998b7a2fb1d464fed2ced7641ddaa3cc31c9941cf110abbf409ed39598005b3399ccfafb61d0315fca0a314be138a9f32503bedac8067f03adbf3575c3b8edc9ba7f537530541ab0f9f3cd04ff50d66f1d559ba520e89a2cb2a83'
 target = '32510ba9babebbbefd001547a810e67149caee11d945cd7fc81a05e9f85aac650e9052ba6a8cd8257bf14d13e6f0a803b54fde9e77472dbff89d71b57bddef121336cb85ccb8f3315f4b52e301d16e9f52f904'
+# thông điệp đích sau khi giải mã
 plaintext = ''
-
-ciphertext_list = [ciphertext1, ciphertext2, ciphertext3, ciphertext4, ciphertext5, ciphertext6, ciphertext7, ciphertext8, ciphertext9, ciphertext10]
-max_length = max(len(ciphertext1), len(ciphertext2))
-key = [[] for i in range(max_length)]
-# Tạo ra tất cả các tổ hợp không trùng lặp của 2 chuỗi từ danh sách
-tuples = list(itertools.combinations(ciphertext_list, 2))
-
 special_chars = {'61', '62', '63', '64', '65', '66', '67', '68', '69', '6a', '6b', '6c', '6d', '6e', '6f', '70', '71',
                  '72', '73', '74', '75', '76', '77', '78', '79', '7a', '41', '42', '43', '44', '45', '46', '47', '48',
                  '49', '4a', '4b', '4c', '4d', '4e', '4f', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59',
                  '5a'}
 
-for pair in tuples:
+# tạo 1 danh sách để lưu các giá trị có thể của từng ký tự của khoá
+max_length = max(len(ciphertext1), len(ciphertext2), len(ciphertext3), len(ciphertext4), len(ciphertext5), len(ciphertext6), len(ciphertext7), len(ciphertext8), len(ciphertext9), len(ciphertext10))
+key = [[] for i in range(max_length)]
+# tạo các tổ hợp bản mã để xử lý
+ciphertext_list = [ciphertext1, ciphertext2, ciphertext3, ciphertext4, ciphertext5, ciphertext6, ciphertext7, ciphertext8, ciphertext9, ciphertext10]
+ciphers = list(itertools.combinations(ciphertext_list, 2))
+
+# xét từng cặp bản mã
+for pair in ciphers:
     str1 = pair[0]
     str2 = pair[1]
     min_len = min(len(str1), len(str2))
 
+    # thực hiện XOR từng cặp số
     for i in range(0, min_len, 2):
         num1 = int(str1[i:i + 2], 16)
         num2 = int(str2[i:i + 2], 16)
 
         xored_num = format(num1 ^ num2, 'x')
 
-        # print(xored_num)
+        # kiểm tra ký tự đặc biệt
         if xored_num in special_chars:
             subkey1 = format(num1 ^ 32, 'x')
             subkey2 = format(num2 ^ 32, 'x')
