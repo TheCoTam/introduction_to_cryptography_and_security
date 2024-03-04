@@ -45,11 +45,11 @@ for pair in ciphers:
             key[int(i / 2)].append(subkey1)
             key[int(i / 2)].append(subkey2)
 
+# thực hiện XOR bản mã đích với khoá để tìm được thông điệp đích
 for i in range(0, len(target), 2):
     num = int(target[i:i+2], 16)
     subkey_list = key[int(i/2)]
     if subkey_list:
-        # dạng thập lục phân
         most_common_subkey = max(subkey_list, key=subkey_list.count)
 
         plaintext = plaintext +chr(int(most_common_subkey, 16) ^ num)
