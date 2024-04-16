@@ -32,5 +32,5 @@ for i in range(len(blockList) - 1, -1, -1):
     if i == 0:
         print(cur_block_hash.hex())
         break
-    # thêm mã hash vào khối trước nó
+
     blockList[i - 1] += cur_block_hash
